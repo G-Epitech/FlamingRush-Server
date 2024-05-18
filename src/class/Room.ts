@@ -28,8 +28,10 @@ export default class Room {
         const user = new User(client, name, profilePicture);
         this.users.push(user);
 
-        if (this.users.length === 1)
+        if (this.users.length === 1) {
             user.owner = true;
+            user.ready = true;
+        }
 
         client.socket.join(this.id);
         client.room = this;

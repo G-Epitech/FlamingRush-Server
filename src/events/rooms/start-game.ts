@@ -17,8 +17,10 @@ export const StartGame: IEvent<void> = {
     if (!user?.owner) return;
 
     for (const user of users) {
-      if (!user.ready && !user.owner) return;
+      if (!user.ready) return;
     }
+
+    users.map((user) => (user.ready = false));
 
     const newGame = games[Math.floor(Math.random() * games.length)];
     room.game = new newGame();
