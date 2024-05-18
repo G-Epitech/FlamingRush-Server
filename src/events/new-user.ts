@@ -8,5 +8,6 @@ export const NewUser: IEvent<void> = {
   handler(client, body) {
     client.id = crypto.randomUUID();
     accountCreated(client);
+    console.log(`👤 Client ${client.id} register`);
   },
 };

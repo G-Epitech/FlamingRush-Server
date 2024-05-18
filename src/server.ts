@@ -30,7 +30,9 @@ export class Server {
       events.map((event) => {
         socket.on(event.name, (payload) => {
           const client = this.clients[socket.id];
-          if (!client.id && event.protected) return;
+          if (!client.id && event.protected) {
+            console.log("🔒 User not authenticated for route.", event.name);
+          }
 
           event.handler(client, JSON.parse(payload || "{}"));
         });

@@ -10,5 +10,6 @@ export const Login: IEvent<LoginPayload> = {
 
   handler(client, payload) {
     client.id = payload.id;
+    console.log(`👤 Client ${client.id} logged in`);
   },
 };
