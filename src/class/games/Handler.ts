@@ -22,7 +22,7 @@ export default class GameHandler {
       startRound(this.room, this.server);
 
       const stateInterval = this.emitState();
-      score = await this.room.game.startGame();
+      score = await this.room.game.start();
 
       clearInterval(stateInterval);
 

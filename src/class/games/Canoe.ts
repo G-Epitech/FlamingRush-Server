@@ -9,7 +9,7 @@ export default class Canoe implements IGame {
     this.test = 0;
   }
 
-  async startGame() {
+  async start() {
     console.log("Starting Canoe game");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.test = 1;
