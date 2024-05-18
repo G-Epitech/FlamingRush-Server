@@ -1,3 +1,5 @@
+import games from "../../class/games";
+import { startRound } from "../../emits";
 import { IEvent } from "../../interfaces/IEvent";
 
 export const StartGame: IEvent<void> = {
@@ -8,14 +10,19 @@ export const StartGame: IEvent<void> = {
   },
 
   handler(client, payload) {
-    const users = client.room?.users || [];
+    const room = client.room!;
+    const users = room.users || [];
     const user = users.find((user) => user.client.id === client.id);
 
-    if (!user?.owner)
-        return;
+    if (!user?.owner) return;
 
     for (const user of users) {
       if (!user.ready && !user.owner) return;
     }
+
+    const newGame = games[Math.floor(Math.random() * games.length)];
+    room.game = new newGame();
+
+    startRound(room, client.server);
   },
 };

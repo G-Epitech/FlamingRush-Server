@@ -1,14 +1,17 @@
 import { roomUpdated } from "../emits";
+import { IGame } from "../interfaces/IGame";
 import Client from "./Client";
 import User from "./User";
 
 export default class Room {
     private _users: User[];
     public readonly id: string;
+    public game?: IGame;
 
     constructor(id: string) {
         this._users = [];
         this.id = id;
+        this.game = undefined;
     }
 
     get users() {
