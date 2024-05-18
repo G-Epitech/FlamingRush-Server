@@ -15,8 +15,6 @@ export default class Client {
     }
 
     public disconnect() {
-        if (this.room) {
-            this.room.leave(this);
-        }
+        this.room?.leave(this);
     }
 }
