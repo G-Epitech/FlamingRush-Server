@@ -1,4 +1,4 @@
-import { NewUser } from "./newUser";
+import { NewUser } from "./NewUser";
 
 const events = [NewUser];
 

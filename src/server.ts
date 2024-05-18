@@ -17,7 +17,7 @@ export class Server {
 
     this.io.on("connection", (socket) => {
       console.log("👤 New user connection.");
-      this.clients[socket.id] = new Client(socket.id, socket);
+      this.clients[socket.id] = new Client(socket, this);
 
       socket.on("disconnect", () => {
         console.log("👤 User disconnected.");
