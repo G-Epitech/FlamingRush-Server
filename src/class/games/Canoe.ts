@@ -2,6 +2,7 @@ import {GameType, IGame} from "../../interfaces/IGame";
 import Room from "../Room";
 import {Server} from "../../Server";
 import {shuffle} from "../../utils/shuffle";
+import User from "../User";
 
 type ObstacleType = "alligator" | "log";
 
@@ -29,6 +30,11 @@ type WaterLine = 0 | 1 | 2 | 3;
 export default class Canoe implements IGame {
     readonly type: GameType = "canoe";
 
+    public readonly events:[string, (user: User, payload: any) => void][] = [
+        ["collide", this.onCollide.bind(this)],
+        ["move", this.onMove.bind(this)],
+    ];
+
     private obstaclesLines: [Obstacles, Obstacles, Obstacles, Obstacles];
 
     private players: Record<string, WaterLine> = {};
@@ -46,10 +52,11 @@ export default class Canoe implements IGame {
             {} as Obstacles,
             {} as Obstacles,
         ];
+        this.onCollide = this.onCollide.bind(this);
     }
 
     async run() {
-
+        await new Promise((resolve) => { setTimeout(resolve, 40000) });
         return true;
     }
 
@@ -63,7 +70,14 @@ export default class Canoe implements IGame {
     }
 
     public tearDown() {
-        /// TODO: Custom teardown
+    }
+
+    private onCollide(user: User, e: string) {
+        console.log("Collide", user, e);
+    }
+
+    private onMove(user: User, payload: { line: WaterLine }) {
+        console.log(`Move ${user.name} to line ${payload.line}`);
     }
 
     getPayload() {

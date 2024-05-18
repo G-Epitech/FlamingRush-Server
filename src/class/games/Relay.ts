@@ -8,6 +8,8 @@ export default class Relay implements IGame {
     private room: Room;
     private server: Server;
 
+    public readonly events: [string, () => void][] = [];
+
     constructor(room: Room, server: Server) {
         this.room = room;
         this.server = server;

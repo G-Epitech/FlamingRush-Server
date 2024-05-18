@@ -47,4 +47,30 @@ export default class Room {
         this.users = this.users.filter(user => user.client !== client);
         updated(this, client.server);
     }
+
+    initializeGame() {
+        if (!this.game) return;
+        for (const [event, callback] of this.game.events) {
+            for (const user of this.users) {
+                if (user.client.id) {
+                    user.client.socket.on(
+                        `games/${this.game.type}/${event}`,
+                        (payload: any) => callback(user, payload)
+                    );
+                }
+            }
+        }
+        this.game.initialize();
+    }
+
+    tearDownGame() {
+        if (!this.game) return;
+        for (const [event] of this.game.events) {
+            for (const user of this.users) {
+                if (user.client.id)
+                    user.client.socket.removeAllListeners(`games/${this.game.type}/${event}`);
+            }
+        }
+        this.game.tearDown();
+    }
 }
