@@ -1,5 +1,5 @@
-import { IEvent } from "../interfaces/IEvent";
-import Room from "../class/Room";
+import { IEvent } from "../../interfaces/IEvent";
+import Room from "../../class/Room";
 
 type JoinRoomPayload = {
   profilePicture: number;
