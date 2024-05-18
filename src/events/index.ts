@@ -1,7 +1,7 @@
-import {NewUser} from "./user/new-user";
+import {NewUser} from "./user/new";
 import {Login} from "./user/login";
-import {CreateRoom} from "./rooms/create-room";
-import {JoinRoom} from "./rooms/join-room";
+import {CreateRoom} from "./rooms/create";
+import {JoinRoom} from "./rooms/join";
 import {StartGame} from "./rooms/start-game";
 import {UserReady} from "./rooms/user-ready";
 
