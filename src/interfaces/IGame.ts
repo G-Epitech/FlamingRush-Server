@@ -2,6 +2,8 @@ export type GameType = "canoe" | "relay";
 
 export interface IGame {
   type: GameType;
-  start: () => Promise<number>;
+  run: () => Promise<boolean>;
+  initialize: () => void;
+  tearDown: () => void;
   getPayload: () => Object;
 }

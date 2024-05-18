@@ -1,20 +1,34 @@
-import { GameType, IGame } from "../../interfaces/IGame";
+import {GameType, IGame} from "../../interfaces/IGame";
+import Room from "../Room";
+import {Server} from "../../Server";
 
 export default class Relay implements IGame {
-  type: GameType;
+    type: GameType = "relay";
 
-  constructor() {
-    this.type = "relay";
-  }
+    private room: Room;
+    private server: Server;
 
-  async start() {
-    console.log("Starting Relay game");
-    return 10;
-  }
+    constructor(room: Room, server: Server) {
+        this.room = room;
+        this.server = server;
+    }
 
-  getPayload() {
-    return {
-      type: this.type
-    };
-  }
+    async run() {
+        console.log("Starting Relay game");
+        return false;
+    }
+
+    public initialize() {
+        console.log("Initializing Relay game");
+    }
+
+    public tearDown() {
+
+    }
+
+    getPayload() {
+        return {
+            type: this.type
+        };
+    }
 }
