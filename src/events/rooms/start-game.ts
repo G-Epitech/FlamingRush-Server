@@ -1,4 +1,5 @@
 import games from "../../class/games";
+import GameHandler from "../../class/games/Handler";
 import { startRound } from "../../emits";
 import { IEvent } from "../../interfaces/IEvent";
 
@@ -22,10 +23,7 @@ export const StartGame: IEvent<void> = {
 
     users.map((user) => (user.ready = false));
 
-    const newGame = games[Math.floor(Math.random() * games.length)];
-    room.game = new newGame();
-
-    room.game.startGame();
-    startRound(room, client.server);
+    const handler = new GameHandler(room, client.server);
+    handler.start();
   },
 };

@@ -18,7 +18,7 @@ export const JoinRoom: IEvent<JoinRoomPayload> = {
     const room: Room | undefined = client.server.rooms[payload.code];
 
     if (!room)
-      return client.socket.emit("roomNotFound");
+      return client.socket.emit("room/not-found");
     return room.register(client, payload.name, payload.profilePicture);
   }
 };

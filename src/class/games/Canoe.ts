@@ -9,6 +9,7 @@ export default class Canoe implements IGame {
 
   async startGame() {
     console.log("Starting Canoe game");
+    return 10;
   }
 
   getPayload() {

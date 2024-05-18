@@ -9,6 +9,7 @@ export default class Relay implements IGame {
 
   async startGame() {
     console.log("Starting Relay game");
+    return 10;
   }
 
   getPayload() {
