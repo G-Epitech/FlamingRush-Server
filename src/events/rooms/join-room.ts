@@ -9,7 +9,10 @@ type JoinRoomPayload = {
 
 export const JoinRoom: IEvent<JoinRoomPayload> = {
   name: "joinRoom",
-  protected: true,
+  protections: {
+    id: true,
+    room: false,
+  },
 
   handler(client, payload) {
     const room: Room | undefined = client.server.rooms[payload.code];

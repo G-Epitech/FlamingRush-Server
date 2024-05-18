@@ -30,8 +30,12 @@ export class Server {
       events.map((event) => {
         socket.on(event.name, (payload) => {
           const client = this.clients[socket.id];
-          if (!client.id && event.protected) {
+
+          if (!client.id && event.protections.id) {
             console.log("🔒 User not authenticated for route.", event.name);
+          }
+          if (!client.room && event.protections.room) {
+            console.log("🛑 User not in room for route.", event.name);
           }
 
           event.handler(client, JSON.parse(payload || "{}"));

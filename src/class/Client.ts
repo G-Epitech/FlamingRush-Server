@@ -1,9 +1,10 @@
 import { Socket } from "socket.io";
 import { Server } from "../Server";
+import Room from "./Room";
 
 export default class Client {
     public id?: string;
-    public room?: any;
+    public room?: Room;
     public readonly socket: Socket;
     public readonly server: Server;
 
