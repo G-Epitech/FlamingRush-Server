@@ -1,8 +1,10 @@
 import * as socket from "socket.io";
+import Client from "./client";
 
 export class Server {
-  private port: number;
+  private readonly port: number;
   private io: socket.Server;
+  private clients: { [key: string]: Client } = {};
 
   constructor(port: number) {
     this.port = port;
@@ -13,7 +15,13 @@ export class Server {
     console.log(`🚀 Server started on port ${this.port}.`);
 
     this.io.on("connection", (socket) => {
-      console.log("👤 New user connexion.");
+      console.log("👤 New user connection.");
+      this.clients[socket.id] = new Client(socket.id, socket);
+
+        socket.on("disconnect", () => {
+            console.log("👤 User disconnected.");
+            delete this.clients[socket.id];
+        });
     });
   }
 }
