@@ -3,7 +3,7 @@ import User from "./User";
 
 export default class Room {
     private users: User[];
-    private readonly id: string;
+    public readonly id: string;
 
     constructor(id: string) {
         this.users = [];

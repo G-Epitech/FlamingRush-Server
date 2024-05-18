@@ -5,7 +5,7 @@ export default class Client {
     public id?: string;
     public room?: any;
     public readonly socket: Socket;
-    private readonly server: Server;
+    public readonly server: Server;
 
     constructor(socket: Socket, server: Server) {
         this.id = undefined;

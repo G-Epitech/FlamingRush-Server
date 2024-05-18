@@ -1,11 +1,13 @@
 import * as socket from "socket.io";
 import Client from "./class/Client";
 import events from "./events";
+import Room from "./class/Room";
 
 export class Server {
   private readonly port: number;
   private io: socket.Server;
   private clients: { [key: string]: Client } = {};
+  public rooms: { [key: string]: Room } = {};
 
   constructor(port: number) {
     this.port = port;
