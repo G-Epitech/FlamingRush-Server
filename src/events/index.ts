@@ -1,5 +1,6 @@
-import { NewUser } from "./NewUser";
+import { NewUser } from "./new-user";
+import { Login } from "./login";
 
-const events = [NewUser];
+const events = [NewUser, Login];
 
 export default events;

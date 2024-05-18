@@ -25,8 +25,8 @@ export class Server {
       });
 
       events.map((event) => {
-        socket.on(event.name, (body) => {
-          event.handler(this.clients[socket.id], body);
+        socket.on(event.name, (payload) => {
+          event.handler(this.clients[socket.id], JSON.parse(payload || "{}"));
         });
       });
     });
