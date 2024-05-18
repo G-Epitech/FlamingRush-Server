@@ -26,7 +26,7 @@ export class Server {
 
       events.map((event) => {
         socket.on(event.name, (body) => {
-          event.handler(this.clients[body.id], body);
+          event.handler(this.clients[socket.id], body);
         });
       });
     });

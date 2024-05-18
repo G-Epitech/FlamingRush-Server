@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/G-Epitech/FlamingRush-Server#readme",
   "dependencies": {
+    "@types/uuid": "^9.0.8",
     "dotenv": "^16.4.5",
     "socket.io": "^4.7.5",
     "typescript": "^5.4.5"
