@@ -1,4 +1,4 @@
-import { accountCreated } from "../../emits";
+import { created } from "../../emits";
 import { IEvent } from "../../interfaces/IEvent";
 
 export const NewUser: IEvent<void> = {
@@ -10,7 +10,7 @@ export const NewUser: IEvent<void> = {
 
   handler(client, body) {
     client.id = crypto.randomUUID();
-    accountCreated(client);
+    created(client);
     console.log(`👤 Client ${client.id} register`);
   },
 };

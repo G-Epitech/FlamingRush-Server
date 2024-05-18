@@ -1,5 +1,5 @@
 import { IEvent } from "../../interfaces/IEvent";
-import {roomUpdated} from "../../emits";
+import {updated} from "../../emits";
 
 export const UserReady: IEvent<void> = {
   name: "room/user-ready",
@@ -14,7 +14,7 @@ export const UserReady: IEvent<void> = {
 
     if (room && user) {
       user.ready = true;
-      roomUpdated(room, client.server);
+      updated(room, client.server);
     }
   }
 };

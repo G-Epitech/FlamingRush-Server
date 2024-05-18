@@ -1,3 +1,3 @@
-export * from "./account-created";
-export * from "./room-updated";
-export * from "./start-round";
+export * from "./user/created";
+export * from "./rooms/updated";
+export * from "./rooms/start-round";

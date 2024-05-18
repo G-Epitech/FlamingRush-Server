@@ -1,8 +1,8 @@
-import { Server } from "../Server";
-import Room from "../class/Room";
+import Room from "../../class/Room";
+import { Server } from "../../Server";
 
-export function roomUpdated(room: Room, server: Server) {
-  server.io.to(room.id).emit("roomUpdated", {
+export function updated(room: Room, server: Server) {
+  server.io.to(room.id).emit("room/updated", {
     id: room.id,
     users: room.users.map((user) => ({
       id: user.client.id,

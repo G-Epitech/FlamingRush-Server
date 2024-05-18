@@ -1,4 +1,4 @@
-import { roomUpdated } from "../emits";
+import { updated } from "../emits";
 import { IGame } from "../interfaces/IGame";
 import Client from "./Client";
 import User from "./User";
@@ -35,7 +35,7 @@ export default class Room {
 
         client.socket.join(this.id);
         client.room = this;
-        roomUpdated(this, client.server);
+        updated(this, client.server);
     }
 
     leave(client: Client) {
@@ -45,6 +45,6 @@ export default class Room {
         user.client.socket.leave(this.id);
         user.client.room = undefined;
         this.users = this.users.filter(user => user.client !== client);
-        roomUpdated(this, client.server);
+        updated(this, client.server);
     }
 }
