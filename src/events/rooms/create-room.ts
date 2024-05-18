@@ -23,6 +23,7 @@ function generateRoomCode() {
 
 export const CreateRoom: IEvent<CreateRoomPayload> = {
   name: "createRoom",
+  protected: true,
 
   handler(client, payload) {
     const room = new Room(generateRoomCode());

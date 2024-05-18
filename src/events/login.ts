@@ -6,6 +6,7 @@ type LoginPayload = {
 
 export const Login: IEvent<LoginPayload> = {
   name: "login",
+  protected: false,
 
   handler(client, payload) {
     client.id = payload.id;

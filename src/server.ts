@@ -29,7 +29,10 @@ export class Server {
 
       events.map((event) => {
         socket.on(event.name, (payload) => {
-          event.handler(this.clients[socket.id], JSON.parse(payload || "{}"));
+          const client = this.clients[socket.id];
+          if (!client.id && event.protected) return;
+
+          event.handler(client, JSON.parse(payload || "{}"));
         });
       });
     });
