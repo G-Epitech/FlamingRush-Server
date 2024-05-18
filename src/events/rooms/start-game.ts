@@ -23,6 +23,7 @@ export const StartGame: IEvent<void> = {
     const newGame = games[Math.floor(Math.random() * games.length)];
     room.game = new newGame();
 
+    room.game.startGame();
     startRound(room, client.server);
   },
 };
