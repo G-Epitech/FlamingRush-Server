@@ -16,12 +16,13 @@ export class Server {
     console.log(`🚀 Server started on port ${this.port}.`);
 
     this.io.on("connection", (socket) => {
-      console.log("👤 New user connection.");
       this.clients[socket.id] = new Client(socket, this);
+      console.log("👤 New user connection.");
 
       socket.on("disconnect", () => {
-        console.log("👤 User disconnected.");
+        this.clients[socket.id].disconnect();
         delete this.clients[socket.id];
+        console.log("👤 User disconnected.");
       });
 
       events.map((event) => {

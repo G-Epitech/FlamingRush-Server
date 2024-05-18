@@ -3,6 +3,7 @@ import { Server } from "../Server";
 
 export default class Client {
     public id?: string;
+    public room?: any;
     public readonly socket: Socket;
     private readonly server: Server;
 
@@ -10,5 +11,11 @@ export default class Client {
         this.id = undefined;
         this.socket = socket;
         this.server = server;
+    }
+
+    public disconnect() {
+        if (this.room) {
+            this.room.leave(this);
+        }
     }
 }
