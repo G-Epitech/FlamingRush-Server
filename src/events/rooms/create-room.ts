@@ -2,23 +2,23 @@ import Room from "../../class/Room";
 import { IEvent } from "../../interfaces/IEvent";
 
 interface CreateRoomPayload {
-    name: string;
-    profilePicture: number;
+  name: string;
+  profilePicture: number;
 }
 
 function generateRoomCode() {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
 
-    let code = "";
-    for (let i = 0; i < 3; i++) {
-        code += characters[Math.floor(Math.random() * characters.length)];
-    }
-    for (let i = 0; i < 3; i++) {
-        code += numbers[Math.floor(Math.random() * numbers.length)];
-    }
+  let code = "";
+  for (let i = 0; i < 3; i++) {
+    code += characters[Math.floor(Math.random() * characters.length)];
+  }
+  for (let i = 0; i < 3; i++) {
+    code += numbers[Math.floor(Math.random() * numbers.length)];
+  }
 
-    return code;
+  return code;
 }
 
 export const CreateRoom: IEvent<CreateRoomPayload> = {
@@ -27,6 +27,7 @@ export const CreateRoom: IEvent<CreateRoomPayload> = {
   handler(client, payload) {
     const room = new Room(generateRoomCode());
 
+    client.room?.leave(client);
     room.register(client, payload.name, payload.profilePicture);
     client.server.rooms[room.id] = room;
   },

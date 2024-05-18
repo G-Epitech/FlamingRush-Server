@@ -5,7 +5,7 @@ import Room from "./class/Room";
 
 export class Server {
   private readonly port: number;
-  private io: socket.Server;
+  public readonly io: socket.Server;
   private clients: { [key: string]: Client } = {};
   public rooms: { [key: string]: Room } = {};
 

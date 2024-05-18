@@ -1,13 +1,22 @@
+import { roomUpdated } from "../emits";
 import Client from "./Client";
 import User from "./User";
 
 export default class Room {
-    private users: User[];
+    private _users: User[];
     public readonly id: string;
 
     constructor(id: string) {
-        this.users = [];
+        this._users = [];
         this.id = id;
+    }
+
+    get users() {
+        return this._users;
+    }
+
+    private set users(users: User[]) {
+        this._users = users;
     }
 
     register(client: Client, name: string, profilePicture: number) {
@@ -16,9 +25,12 @@ export default class Room {
         const user = new User(client, name, profilePicture);
         this.users.push(user);
 
+        if (this.users.length === 1)
+            user.owner = true;
+
         client.socket.join(this.id);
         client.room = this;
-        // TODO: Notify other users that this user has joined
+        roomUpdated(this, client.server);
     }
 
     leave(client: Client) {
@@ -28,6 +40,6 @@ export default class Room {
         user.client.socket.leave(this.id);
         user.client.room = undefined;
         this.users = this.users.filter(user => user.client !== client);
-        // TODO: Notify other users that this user has left
+        roomUpdated(this, client.server);
     }
 }
