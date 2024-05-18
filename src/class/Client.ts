@@ -11,6 +11,7 @@ export default class Client {
         this.id = undefined;
         this.socket = socket;
         this.server = server;
+        this.room = undefined;
     }
 
     public disconnect() {
