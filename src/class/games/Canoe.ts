@@ -7,7 +7,7 @@ export default class Canoe implements IGame {
     this.type = "canoe";
   }
 
-  startGame() {
+  async startGame() {
     console.log("Starting Canoe game");
   }
 

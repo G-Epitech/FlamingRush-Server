@@ -7,7 +7,7 @@ export default class Relay implements IGame {
     this.type = "relay";
   }
 
-  startGame() {
+  async startGame() {
     console.log("Starting Relay game");
   }
 
