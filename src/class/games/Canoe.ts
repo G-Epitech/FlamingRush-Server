@@ -1,14 +1,14 @@
 import { GameType, IGame } from "../../interfaces/IGame";
 
-export default class Kanoe implements IGame {
+export default class Canoe implements IGame {
   type: GameType;
 
   constructor() {
-    this.type = "kanoe";
+    this.type = "canoe";
   }
 
   startGame() {
-    console.log("Starting Kanoe game");
+    console.log("Starting Canoe game");
   }
 
   getPayload() {

@@ -1,6 +1,6 @@
 import Relay from "./Relay";
-import Kanoe from "./Kanoe";
+import Canoe from "./Canoe";
 
-const games = [Relay, Kanoe];
+const games = [Relay, Canoe];
 
 export default games;
