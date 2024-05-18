@@ -1,4 +1,3 @@
-import Client from "../class/Client";
 import { accountCreated } from "../emits";
 import { IEvent } from "../interfaces/IEvent";
 

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Server } from "./src/Server";
 import dotenv from "dotenv";
 
