@@ -38,7 +38,7 @@ export class Server {
             console.log("🛑 User not in room for route.", event.name);
           }
 
-          event.handler(client, JSON.parse(payload || "{}"));
+          event.handler(client, payload);
         });
       });
     });
