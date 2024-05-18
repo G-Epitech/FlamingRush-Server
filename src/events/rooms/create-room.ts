@@ -22,7 +22,7 @@ function generateRoomCode() {
 }
 
 export const CreateRoom: IEvent<CreateRoomPayload> = {
-    name: "createRoom",
+    name: "room/create",
     protections: {
         id: true,
         room: false,

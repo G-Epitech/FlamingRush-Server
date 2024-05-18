@@ -3,7 +3,7 @@ import { startRound } from "../../emits";
 import { IEvent } from "../../interfaces/IEvent";
 
 export const StartGame: IEvent<void> = {
-  name: "startGame",
+  name: "room/start-round",
   protections: {
     id: true,
     room: true,

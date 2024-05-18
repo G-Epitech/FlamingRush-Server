@@ -1,11 +1,11 @@
-import { IEvent } from "../interfaces/IEvent";
+import { IEvent } from "../../interfaces/IEvent";
 
 type LoginPayload = {
   id: string;
 }
 
 export const Login: IEvent<LoginPayload> = {
-  name: "login",
+  name: "user/login",
   protections: {
     id: false,
     room: false,

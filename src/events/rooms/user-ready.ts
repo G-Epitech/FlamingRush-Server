@@ -2,7 +2,7 @@ import { IEvent } from "../../interfaces/IEvent";
 import {roomUpdated} from "../../emits";
 
 export const UserReady: IEvent<void> = {
-  name: "userReady",
+  name: "room/user-ready",
   protections: {
     id: true,
     room: true,

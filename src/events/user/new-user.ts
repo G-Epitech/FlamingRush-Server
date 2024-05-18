@@ -1,8 +1,8 @@
-import { accountCreated } from "../emits";
-import { IEvent } from "../interfaces/IEvent";
+import { accountCreated } from "../../emits";
+import { IEvent } from "../../interfaces/IEvent";
 
 export const NewUser: IEvent<void> = {
-  name: "newUser",
+  name: "user/new",
   protections: {
     id: false,
     room: false,

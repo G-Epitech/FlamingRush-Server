@@ -8,7 +8,7 @@ type JoinRoomPayload = {
 }
 
 export const JoinRoom: IEvent<JoinRoomPayload> = {
-  name: "joinRoom",
+  name: "room/join",
   protections: {
     id: true,
     room: false,
