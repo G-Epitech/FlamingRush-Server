@@ -1,5 +1,6 @@
 import * as socket from "socket.io";
-import Client from "./client";
+import Client from "./class/Client";
+import events from "./events";
 
 export class Server {
   private readonly port: number;
@@ -18,10 +19,16 @@ export class Server {
       console.log("👤 New user connection.");
       this.clients[socket.id] = new Client(socket.id, socket);
 
-        socket.on("disconnect", () => {
-            console.log("👤 User disconnected.");
-            delete this.clients[socket.id];
+      socket.on("disconnect", () => {
+        console.log("👤 User disconnected.");
+        delete this.clients[socket.id];
+      });
+
+      events.map((event) => {
+        socket.on(event.name, (body) => {
+          event.handler(this.clients[body.id], body);
         });
+      });
     });
   }
 }
