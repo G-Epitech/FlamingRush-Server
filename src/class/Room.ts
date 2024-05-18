@@ -11,6 +11,8 @@ export default class Room {
     }
 
     register(client: Client, name: string, profilePicture: number) {
+        if (this.users.length >= 4)
+            return;
         const user = new User(client, name, profilePicture);
         this.users.push(user);
 
