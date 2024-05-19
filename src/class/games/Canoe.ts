@@ -4,28 +4,15 @@ import {Server} from "../../Server";
 import {shuffle} from "../../utils/shuffle";
 import User from "../User";
 
-type ObstacleType = "alligator" | "log";
+const OutOfLine = -1;
 
-type TypedObstacle = {
-    readonly type: ObstacleType;
-}
+type SafeWaterLine = 0 | 1 | 2 | 3;
 
-type Alligator = TypedObstacle & {
-    readonly type: "alligator";
-    teeth: number;
-    direction: "left" | "right";
-}
+type WaterLine = SafeWaterLine | typeof OutOfLine;
 
-type Log = TypedObstacle & {
-    readonly type: "log";
-    length: number;
-}
-
-type Obstacle = Alligator | Log;
+type Obstacle = "alligator" | "log" | "barrel";
 
 type Obstacles = Record<string, Obstacle>
-
-type WaterLine = 0 | 1 | 2 | 3;
 
 export default class Canoe implements IGame {
     readonly type: GameType = "canoe";
@@ -38,6 +25,10 @@ export default class Canoe implements IGame {
     private obstaclesLines: [Obstacles, Obstacles, Obstacles, Obstacles];
 
     private players: Record<string, WaterLine> = {};
+
+    private alligatorsTimeouts: Record<string, NodeJS.Timeout> = {};
+
+    private nbObstacles = 0;
 
     private room: Room;
 
@@ -56,12 +47,16 @@ export default class Canoe implements IGame {
     }
 
     async run() {
-        await new Promise((resolve) => { setTimeout(resolve, 40000) });
-        return true;
+        this.nbObstacles = 20;
+        while (this.isRunning()) {
+            if (this.nbObstacles > 0)
+                await this.scheduleNextObstacle();
+        }
+        return Object.values(this.players).some((line) => line !== OutOfLine);
     }
 
     public initialize() {
-        let positions = shuffle<WaterLine>([0, 1, 2, 3]);
+        const positions = shuffle<WaterLine>([0, 1, 2, 3]);
 
         for (const user of this.room.users) {
             if (user.client.id)
@@ -72,18 +67,70 @@ export default class Canoe implements IGame {
     public tearDown() {
     }
 
-    private onCollide(user: User, e: string) {
-        console.log("Collide", user, e);
+    private generateObstacle() {
+        const obstacles: Obstacle[]  = ["alligator", "log", "barrel"];
+        const obstacle = obstacles[Math.floor(Math.random() * 3)];
+        const obstacleId = crypto.randomUUID();
+        const waterLine = Math.floor(Math.random() * 4) as SafeWaterLine;
+
+        if (obstacle === "alligator") {
+            const timeout = Math.floor(Math.random() * 400) + 800;
+
+            this.alligatorsTimeouts[obstacleId] = setTimeout(() => {
+                this.alligatorOnMove(obstacleId);
+            }, timeout);
+        }
+        this.obstaclesLines[waterLine][obstacleId] = obstacle;
+        return obstacle;
+    }
+
+    private onCollide(user: User, payload: { id: string, obstacle: Obstacle }) {
+        if (!user.client.id || !this.players[user.client.id])
+            return;
+        this.players[user.client.id] = OutOfLine;
+        if (payload.obstacle === "alligator")
+            clearTimeout(this.alligatorsTimeouts[payload.id]);
+        for (const line of this.obstaclesLines)
+            delete line[payload.id];
     }
 
     private onMove(user: User, payload: { line: WaterLine }) {
-        console.log(`Move ${user.name} to line ${payload.line}`);
+        if (!user.client.id || !this.players[user.client.id])
+            return;
+        if (this.players[user.client.id] === OutOfLine)
+            return;
+        this.players[user.client.id] = payload.line;
+    }
+
+    private alligatorOnMove(alligatorId: string) {
+        const currentWaterLine = this.obstaclesLines.findIndex((line) => line[alligatorId]);
+        const newWaterLine = ((currentWaterLine + 1) % 4) as SafeWaterLine;
+
+        if (currentWaterLine === OutOfLine)
+            return;
+        this.obstaclesLines[newWaterLine][alligatorId] = this.obstaclesLines[currentWaterLine][alligatorId];
+        delete this.obstaclesLines[currentWaterLine][alligatorId];
+    }
+
+    private async scheduleNextObstacle() {
+        const cooldown = Math.floor(Math.random() * 500) + 1500;
+
+        this.generateObstacle();
+        this.nbObstacles -= 1;
+        return await new Promise((resolve) => { setTimeout(resolve, cooldown) });
+    }
+
+    private isRunning() {
+        return Object.values(this.players).some(
+            (line) => line !== OutOfLine
+        ) && this.nbObstacles > 0;
     }
 
     getPayload() {
         return {
             type: this.type,
             players: this.players,
+            obstacles: this.obstaclesLines,
         };
     }
 }

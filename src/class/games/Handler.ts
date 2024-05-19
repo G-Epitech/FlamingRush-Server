@@ -19,7 +19,7 @@ export default class GameHandler {
 
     while (score > 0) {
       /// Choose game of round
-      const game = games[Math.floor(Math.random() * games.length)];
+      const game = games[1];//[Math.floor(Math.random() * games.length)];
       this.room.game = new game(this.room, this.server);
 
       /// Start round
