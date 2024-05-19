@@ -14,7 +14,7 @@ export default class Room {
         this._users = [];
         this.id = id;
         this.game = undefined;
-        this.round = 0;
+        this.round = 1;
         this.lives = 3;
     }
 

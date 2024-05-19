@@ -80,7 +80,9 @@ export default class Canoe implements IGame {
 
     private generateObstacle() {
         const obstacles: Obstacle[]  = ["alligator", "log", "barrel"];
-        const obstacle = obstacles[Math.floor(Math.random() * 3)];
+        let obstacle = obstacles[Math.floor(Math.random() * 3)];
+        while (obstacle === "alligator" && this.room.level < 3)
+            obstacle = obstacles[Math.floor(Math.random() * 3)];
         const obstacleId = crypto.randomUUID();
         const waterLine = Math.floor(Math.random() * 4) as SafeWaterLine;
 
