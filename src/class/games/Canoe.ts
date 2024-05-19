@@ -8,7 +8,13 @@ const OutOfLine = -1;
 
 type SafeWaterLine = 0 | 1 | 2 | 3;
 
+
 type WaterLine = SafeWaterLine | typeof OutOfLine;
+
+type Position = {
+    x: WaterLine,
+    y: WaterLine
+};
 
 type Obstacle = "alligator" | "log" | "barrel";
 
@@ -24,7 +30,7 @@ export default class Canoe implements IGame {
 
     private readonly obstaclesLines: [Obstacles, Obstacles, Obstacles, Obstacles];
 
-    private players: Record<string, WaterLine> = {};
+    private players: Record<string, Position> = {};
 
     private alligatorsTimeouts: Record<string, NodeJS.Timeout> = {};
 
@@ -51,15 +57,19 @@ export default class Canoe implements IGame {
             if (this.nbObstacles > 0)
                 await this.scheduleNextObstacle();
         }
-        return Object.values(this.players).some((line) => line !== OutOfLine);
+        return Object.values(this.players).some((line) => line.x !== OutOfLine || line.y !== OutOfLine);
     }
 
     public initialize() {
-        const positions = shuffle<WaterLine>([0, 1, 2, 3]);
+        const x = shuffle<WaterLine>([0, 1, 2, 3]);
+        const y = shuffle<WaterLine>([0, 1, 2, 3]);
 
         for (const user of this.room.users) {
             if (user.client.id)
-                this.players[user.client.id] = positions.pop()!;
+                this.players[user.client.id] = {
+                    x: x.pop() as WaterLine,
+                    y: y.pop() as WaterLine,
+                }
         }
         this.nbObstacles = 20;
     }
@@ -90,19 +100,19 @@ export default class Canoe implements IGame {
     private onCollide(user: User, payload: { id: string, obstacle: Obstacle }) {
         if (!user.client.id || !this.players[user.client.id])
             return;
-        this.players[user.client.id] = OutOfLine;
+        this.players[user.client.id].y = OutOfLine;
         if (payload.obstacle === "alligator")
             clearTimeout(this.alligatorsTimeouts[payload.id]);
         for (const line of this.obstaclesLines)
             delete line[payload.id];
     }
 
-    private onMove(user: User, payload: { line: WaterLine }) {
+    private onMove(user: User, payload: { position: Position }) {
         if (!user.client.id || !this.players[user.client.id])
             return;
-        if (this.players[user.client.id] === OutOfLine)
+        if (this.players[user.client.id].y === OutOfLine || this.players[user.client.id].x === OutOfLine)
             return;
-        this.players[user.client.id] = payload.line;
+        this.players[user.client.id] = payload.position;
     }
 
     private alligatorOnMove(alligatorId: string) {
@@ -126,7 +136,7 @@ export default class Canoe implements IGame {
 
     private isRunning() {
         return Object.values(this.players).some(
-            (line) => line !== OutOfLine
+            (position) => position.x !== OutOfLine || position.y !== OutOfLine
         ) && this.nbObstacles > 0;
     }
 
