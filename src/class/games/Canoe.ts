@@ -85,7 +85,8 @@ export default class Canoe implements IGame {
         const waterLine = Math.floor(Math.random() * 4) as SafeWaterLine;
 
         if (obstacle === "alligator") {
-            const timeout = Math.floor(Math.random() * 500) + 2000;
+            const level = this.room.level;
+            const timeout = Math.floor(Math.random() * 4000 / level) + 1500;
 
             this.alligatorsTimeouts[obstacleId] = setTimeout(() => {
                 this.alligatorOnMove(obstacleId);
@@ -129,7 +130,8 @@ export default class Canoe implements IGame {
     }
 
     private async scheduleNextObstacle() {
-        const cooldown = Math.floor(Math.random() * 500) + 2000;
+        const level = this.room.level;
+        const cooldown = Math.floor(Math.random() * 4000 / level) + 1500;
 
         this.generateObstacle();
         this.nbObstacles -= 1;

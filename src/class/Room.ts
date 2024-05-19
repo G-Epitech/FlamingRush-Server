@@ -26,6 +26,18 @@ export default class Room {
         this._users = users;
     }
 
+    private readonly levels = [
+        {level: 1, from: 1},
+        {level: 2, from: 5},
+        {level: 3, from: 10},
+        {level: 4, from: 15},
+        {level: 5, from: 25}
+    ];
+
+    public get level(): number {
+        return this.levels.find((level) => this.round >= level.from)!.level;
+    }
+
     register(client: Client, name: string, profilePicture: number) {
         if (this.users.length >= 4 || !client.id)
             return;

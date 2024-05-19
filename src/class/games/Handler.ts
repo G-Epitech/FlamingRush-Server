@@ -14,24 +14,12 @@ export default class GameHandler {
         this.server = server;
     }
 
-    private readonly levels = [
-        {level: 1, from: 1},
-        {level: 2, from: 5},
-        {level: 3, from: 10},
-        {level: 4, from: 15},
-        {level: 5, from: 25}
-    ];
-
-    private getLevel(score: number) {
-        return this.levels.find((level) => score >= level.from)!.level;
-    }
 
     public async start() {
         let gameIndex = 0;
 
         while (this.room.lives > 0) {
             /// Choose game of round
-            const level = this.getLevel(this.room.round);
             const previousGameIndex = gameIndex;
             while (gameIndex === previousGameIndex)
                 gameIndex = Math.floor(Math.random() * games.length);
