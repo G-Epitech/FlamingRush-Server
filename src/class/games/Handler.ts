@@ -38,7 +38,7 @@ export default class GameHandler {
 
       /// Stop game and wait for next round
       clearInterval(stateInterval);
-      this.room.game.tearDown();
+      this.room.tearDownGame();
       this.room.users.map((user) => (user.ready = false));
       endRound(this.room, this.server);
 
@@ -60,7 +60,7 @@ export default class GameHandler {
   };
 
   private initialize() {
-    this.room.game?.initialize();
+    this.room.initializeGame();
     initialized(this.room, this.server);
   }
 }

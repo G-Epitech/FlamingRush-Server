@@ -8,7 +8,6 @@ const OutOfLine = -1;
 
 type SafeWaterLine = 0 | 1 | 2 | 3;
 
-
 type WaterLine = SafeWaterLine | typeof OutOfLine;
 
 type Position = {
@@ -100,6 +99,8 @@ export default class Canoe implements IGame {
     private onCollide(user: User, payload: { id: string, obstacle: Obstacle }) {
         if (!user.client.id || !this.players[user.client.id])
             return;
+        if (!this.obstaclesLines.some((line) => line[payload.id]))
+            return;
         this.players[user.client.id].y = OutOfLine;
         if (payload.obstacle === "alligator")
             clearTimeout(this.alligatorsTimeouts[payload.id]);
@@ -110,9 +111,10 @@ export default class Canoe implements IGame {
     private onMove(user: User, payload: { position: Position }) {
         if (!user.client.id || !this.players[user.client.id])
             return;
-        if (this.players[user.client.id].y === OutOfLine || this.players[user.client.id].x === OutOfLine)
+        if (this.players[user.client.id].y === OutOfLine)
             return;
-        this.players[user.client.id] = payload.position;
+        console.log(`Player ${user.client.id} moved.`);
+        this.players[user.client.id].y = payload.position.y;
     }
 
     private alligatorOnMove(alligatorId: string) {
@@ -136,7 +138,7 @@ export default class Canoe implements IGame {
 
     private isRunning() {
         return Object.values(this.players).some(
-            (position) => position.x !== OutOfLine || position.y !== OutOfLine
+            (position) => position.y !== OutOfLine
         ) && this.nbObstacles > 0;
     }
 
