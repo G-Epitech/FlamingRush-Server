@@ -25,7 +25,7 @@ export default class Room {
     register(client: Client, name: string, profilePicture: number) {
         if (this.users.length >= 4 || !client.id)
             return;
-        const user = new User(client, name, profilePicture);
+        const user = new User(client, name, profilePicture, this.users.length);
         this.users.push(user);
 
         if (this.users.length === 1) {
