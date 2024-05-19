@@ -47,7 +47,6 @@ export default class Canoe implements IGame {
     }
 
     async run() {
-        this.nbObstacles = 20;
         while (this.isRunning()) {
             if (this.nbObstacles > 0)
                 await this.scheduleNextObstacle();
@@ -62,6 +61,7 @@ export default class Canoe implements IGame {
             if (user.client.id)
                 this.players[user.client.id] = positions.pop()!;
         }
+        this.nbObstacles = 20;
     }
 
     public tearDown() {
