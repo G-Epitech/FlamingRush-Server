@@ -4,6 +4,7 @@ import {CreateRoom} from "./rooms/create";
 import {JoinRoom} from "./rooms/join";
 import {StartGame} from "./rooms/start-round";
 import {UserReady} from "./rooms/user-ready";
+import { StatusRoom } from "./rooms/status";
 
 const events = [
     NewUser,
@@ -11,7 +12,8 @@ const events = [
     CreateRoom,
     JoinRoom,
     StartGame,
-    UserReady
+    UserReady,
+    StatusRoom
 ];
 
 export default events;
