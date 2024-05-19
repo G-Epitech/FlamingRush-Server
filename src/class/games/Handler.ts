@@ -51,6 +51,11 @@ export default class GameHandler {
             }
             this.room.round += 1;
         }
+
+        this.room.users.map((user) => {
+            user.client.room = undefined;
+        })
+        delete this.server.rooms[this.room.id];
     }
 
     private emitState() {
