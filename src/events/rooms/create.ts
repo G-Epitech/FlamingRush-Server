@@ -31,11 +31,13 @@ export const CreateRoom: IEvent<CreateRoomPayload> = {
     handler(client, payload) {
         const room = new Room(generateRoomCode());
 
+        console.log(`[ROOM] Room ${room.id} created.`)
         if (client.room) {
             const oldRoom = client.room;
 
             oldRoom.leave(client);
             delete client.server.rooms[room.id];
+            console.log(`[ROOM] Room ${oldRoom.id} deleted.`)
         }
         client.server.rooms[room.id] = room;
         room.register(client, payload.name, payload.profilePicture);

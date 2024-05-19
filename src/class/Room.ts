@@ -91,7 +91,7 @@ export default class Room {
     }
 
     updateLives(won: boolean) {
-        if (won) this.lives = this.lives < 3 ? this.lives + 1 : 3;
-        else this.lives = this.lives > 0 ? this.lives - 1 : 0;
+        if (!won)
+            this.lives = this.lives > 0 ? this.lives - 1 : 0;
     }
 }

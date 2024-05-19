@@ -56,7 +56,7 @@ export default class Canoe implements IGame {
             if (this.nbObstacles > 0)
                 await this.scheduleNextObstacle();
         }
-        return Object.values(this.players).some((line) => line.x !== OutOfLine || line.y !== OutOfLine);
+        return Object.values(this.players).some((line) => line.y !== OutOfLine);
     }
 
     public initialize() {
@@ -95,7 +95,6 @@ export default class Canoe implements IGame {
             }, timeout);
         }
         this.obstaclesLines[waterLine][obstacleId] = obstacle;
-        console.log(`Obstacle ${obstacle} at line ${waterLine}.`);
         return obstacle;
     }
 
@@ -104,6 +103,7 @@ export default class Canoe implements IGame {
             return;
         if (!this.obstaclesLines.some((line) => line[payload.id]))
             return;
+        console.log(`[CANOE] Player ${user.client.id} collided with ${payload.obstacle} ${payload.id}.`);
         this.players[user.client.id].y = OutOfLine;
         if (payload.obstacle === "alligator")
             clearTimeout(this.alligatorsTimeouts[payload.id]);
@@ -116,7 +116,7 @@ export default class Canoe implements IGame {
             return;
         if (this.players[user.client.id].y === OutOfLine)
             return;
-        console.log(`Player ${user.client.id} moved.`);
+        console.log(`[CANOE] Player ${user.client.id} moved.`);
         this.players[user.client.id].y = payload.position.y;
     }
 
@@ -128,7 +128,7 @@ export default class Canoe implements IGame {
             return;
         this.obstaclesLines[newWaterLine][alligatorId] = this.obstaclesLines[currentWaterLine][alligatorId];
         delete this.obstaclesLines[currentWaterLine][alligatorId];
-        console.log(`Alligator ${alligatorId} moved from line ${currentWaterLine} to line ${newWaterLine}.`);
+        console.log(`[CANOE] Alligator ${alligatorId} moved from line ${currentWaterLine} to line ${newWaterLine}.`);
     }
 
     private async scheduleNextObstacle() {

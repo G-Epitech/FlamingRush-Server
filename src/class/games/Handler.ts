@@ -20,10 +20,10 @@ export default class GameHandler {
 
         while (this.room.lives > 0) {
             /// Choose game of round
-            const previousGameIndex = gameIndex;
+/*            const previousGameIndex = gameIndex;
             while (gameIndex === previousGameIndex)
-                gameIndex = Math.floor(Math.random() * games.length);
-            const game = games[gameIndex];
+                gameIndex = Math.floor(Math.random() * games.length);*/
+            const game = games[1];
             this.room.game = new game(this.room, this.server);
 
             /// Start round
@@ -40,10 +40,14 @@ export default class GameHandler {
             clearInterval(stateInterval);
             this.room.tearDownGame();
             this.room.users.map((user) => (user.ready = false));
-            endRound(this.room, this.server);
+            this.room.updateLives(won);
 
             /// Update score
-            this.room.updateLives(won);
+            console.log(`[ROOM] Room ${this.room.id} won: ${won}`);
+            endRound(this.room, this.server);
+            console.log(`[ROOM] Room ${this.room.id} lives: ${this.room.lives}`);
+            console.log(`[ROOM] Room ${this.room.id} round: ${this.room.round}`);
+
 
             // Wait for all users to be ready
             while (this.room.users.some((user) => !user.ready)) {
