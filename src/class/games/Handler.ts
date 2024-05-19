@@ -16,10 +16,14 @@ export default class GameHandler {
 
   public async start() {
     let score = 3;
+    let gameIndex = 0;
 
     while (score > 0) {
       /// Choose game of round
-      const game = games[1];//[Math.floor(Math.random() * games.length)];
+      const previousGameIndex = gameIndex;
+      while (gameIndex === previousGameIndex)
+        gameIndex = Math.floor(Math.random() * games.length);
+      const game = games[gameIndex];
       this.room.game = new game(this.room, this.server);
 
       /// Start round
