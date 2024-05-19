@@ -7,11 +7,15 @@ export default class Room {
     private _users: User[];
     public readonly id: string;
     public game?: IGame;
+    public round: number;
+    public lives: number;
 
     constructor(id: string) {
         this._users = [];
         this.id = id;
         this.game = undefined;
+        this.round = 0;
+        this.lives = 3;
     }
 
     get users() {
@@ -72,5 +76,10 @@ export default class Room {
             }
         }
         this.game.tearDown();
+    }
+
+    updateLives(won: boolean) {
+        if (won) this.lives = this.lives < 3 ? this.lives + 1 : 3;
+        else this.lives = this.lives > 0 ? this.lives - 1 : 0;
     }
 }

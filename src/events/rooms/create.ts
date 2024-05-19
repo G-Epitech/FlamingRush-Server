@@ -35,7 +35,7 @@ export const CreateRoom: IEvent<CreateRoomPayload> = {
             const oldRoom = client.room;
 
             oldRoom.leave(client);
-            delete client.server.rooms[oldRoom.id];
+            delete client.server.rooms[room.id];
         }
         client.server.rooms[room.id] = room;
         room.register(client, payload.name, payload.profilePicture);
