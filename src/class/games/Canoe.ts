@@ -22,7 +22,7 @@ export default class Canoe implements IGame {
         ["move", this.onMove.bind(this)],
     ];
 
-    private obstaclesLines: [Obstacles, Obstacles, Obstacles, Obstacles];
+    private readonly obstaclesLines: [Obstacles, Obstacles, Obstacles, Obstacles];
 
     private players: Record<string, WaterLine> = {};
 
@@ -65,6 +65,8 @@ export default class Canoe implements IGame {
     }
 
     public tearDown() {
+        for (const id in this.alligatorsTimeouts)
+            clearTimeout(this.alligatorsTimeouts[id]);
     }
 
     private generateObstacle() {
@@ -74,13 +76,14 @@ export default class Canoe implements IGame {
         const waterLine = Math.floor(Math.random() * 4) as SafeWaterLine;
 
         if (obstacle === "alligator") {
-            const timeout = Math.floor(Math.random() * 400) + 800;
+            const timeout = Math.floor(Math.random() * 500) + 2000;
 
             this.alligatorsTimeouts[obstacleId] = setTimeout(() => {
                 this.alligatorOnMove(obstacleId);
             }, timeout);
         }
         this.obstaclesLines[waterLine][obstacleId] = obstacle;
+        console.log(`Obstacle ${obstacle} at line ${waterLine}.`);
         return obstacle;
     }
 
@@ -110,10 +113,11 @@ export default class Canoe implements IGame {
             return;
         this.obstaclesLines[newWaterLine][alligatorId] = this.obstaclesLines[currentWaterLine][alligatorId];
         delete this.obstaclesLines[currentWaterLine][alligatorId];
+        console.log(`Alligator ${alligatorId} moved from line ${currentWaterLine} to line ${newWaterLine}.`);
     }
 
     private async scheduleNextObstacle() {
-        const cooldown = Math.floor(Math.random() * 500) + 1500;
+        const cooldown = Math.floor(Math.random() * 500) + 2000;
 
         this.generateObstacle();
         this.nbObstacles -= 1;
